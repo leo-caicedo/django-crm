@@ -2,3 +2,4 @@ venv
 db.sqlite3
 *pycache*
 *00*
+*.png
