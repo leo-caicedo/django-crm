@@ -2,9 +2,11 @@
 from django.urls import path
 
 # Views
-from accounts.views import main
+from accounts import views
 
 app_name = 'accounts'
 urlpatterns = [
-    path('', main),
+    path('', views.home),
+    path('products/', views.products),
+    path('customer/', views.customer),
 ]
