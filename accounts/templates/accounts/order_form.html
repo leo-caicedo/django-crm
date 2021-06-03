@@ -1,0 +1,14 @@
+{% extends 'accounts/main.html' %}
+{% load static %}
+{% block content %}
+
+    <form method="POST">
+
+<table>
+        {% csrf_token %}
+        {{form.as_table}}
+</table>
+        <input type="submit" name="" id="">
+    </form>
+
+{% endblock %}
