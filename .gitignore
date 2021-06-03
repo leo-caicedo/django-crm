@@ -1,3 +1,4 @@
+Pipfile*
 venv
 db.sqlite3
 *pycache*
