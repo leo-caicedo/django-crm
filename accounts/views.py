@@ -4,6 +4,7 @@ from django.forms import inlineformset_factory
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 
 # Decorators
 from .decorators import unauthenticated_user, allowed_users, admin_only
@@ -28,6 +29,9 @@ def register_page(request):
             username = form.cleaned_data.get('username')
             group = Group.objects.get(name='customer')
             user.groups.add(group)
+            Customer.objects.create(
+                user=user,
+                )
             messages.success(request, 'Account was created for ' + username)
 
             return redirect('accounts:login')
@@ -77,8 +81,19 @@ def home(request):
 
     return render(request, 'accounts/dashboard.html', context)
 
+@login_required(login_url='accounts:login')
+@allowed_users(allowed_roles=['customer'])
 def user_page(request):
-    context = {}
+    orders = request.user.customer.order_set.all()
+    total_orders = orders.count()
+    delivered = orders.filter(status='Delivered').count()
+    pending = orders.filter(status='Pending').count()
+    context = {
+        'orders': orders,
+        'total_orders':total_orders,
+        'delivered':delivered,
+	'pending':pending
+    }
     return render(request, 'accounts/user.html', context)
 
 
